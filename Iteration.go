@@ -60,7 +60,7 @@ func Iteration(A [][]float64, B, X0 []float64, eps float64) ([]float64, int) {
 	// Если итераций слишком много - вывести ошибку
 	if currentIter >= maxIter {
 		fmt.Println("Прошло слишком много итераций")
-		return []float64{0.0, 0.0, 0.0}, currentIter
+		return make([]float64, n), currentIter
 	}
 
 	// Если всё в порядке - вывести решение
