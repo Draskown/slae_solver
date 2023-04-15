@@ -1,22 +1,22 @@
-package main
+package methods
 
 import (
 	"fmt"
 	"math"
 )
 
-// Метод Зейделя для решения СЛАУ
-func Seidel(A [][]float64, B, X0 []float64, eps float64) ([]float64, int) {
+// Метод итераций для решения СЛАУ
+func Iteration(A [][]float64, B, X0 []float64, eps float64) ([]float64, int) {
 
 	// Размер матрицы
-	n := len(A)
-	// Вектор решения
+	n := len(B)
+	// Вектор ответа
 	X := make([]float64, n)
 	// Нулевые приближения
 	xPrev := X0
-	// Максимальное количество итераций
+	// Максимум итераций
 	maxIter := int(1e+8)
-	// Начальное значение итераций
+	// Текущая итерация
 	currentIter := 0
 
 	// Проводить вычисления до достижения максимума итераций
@@ -24,30 +24,23 @@ func Seidel(A [][]float64, B, X0 []float64, eps float64) ([]float64, int) {
 	for currentIter < maxIter {
 		// Каждая строка
 		for i := 0; i < n; i++ {
-			var sum1 float64
+			var sum float64
 
-			// Столбцы
-			for j := 0; j < i; j++ {
-				// Считается сумма1 всех элементов строки слева от диагонали,
-				// Умноженное на новые приближения
-				sum1 += A[i][j] * X[j]
-			}
-
-			var sum2 float64
-
-			// Столбцы
-			for j := i + 1; j < n; j++ {
-				// Считается сумма2 всех элементов строки справа от диагонали,
-				// Умноженное на старые приближения
-				sum2 += A[i][j] * xPrev[j]
+			// Каждый столбец
+			for j := 0; j < n; j++ {
+				// Если элемент матрицы не лежит на диагонали
+				if j != i {
+					// Добавить его в сумму
+					sum += A[i][j] * X[j]
+				}
 			}
 
 			// Вычисление новых приближения
-			X[i] = (B[i] - sum1 - sum2) / A[i][i]
+			X[i] = (B[i] - sum) / A[i][i]
 		}
 
 		// Вычисление точности как суммы
-		diff := 0.0
+		var diff float64
 		// Для каждого из новых приближений
 		for i := 0; i < n; i++ {
 			diff += math.Abs(X[i] - xPrev[i])
@@ -67,7 +60,7 @@ func Seidel(A [][]float64, B, X0 []float64, eps float64) ([]float64, int) {
 	// Если итераций слишком много - вывести ошибку
 	if currentIter >= maxIter {
 		fmt.Println("Прошло слишком много итераций")
-		return []float64{0.0, 0.0, 0.0}, currentIter
+		return make([]float64, n), currentIter
 	}
 
 	// Если всё в порядке - вывести решение

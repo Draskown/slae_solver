@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	mtd "main/methods"
+)
 
 func main() {
 	// Описание входной системы уравнений
@@ -45,7 +48,7 @@ func main() {
 
 	if method == "G" {
 		// Решение методом Гаусса
-		x = Gauss(A, B)
+		x = mtd.Gauss(A, B)
 
 		// Вывод решения
 		fmt.Printf("Решение: %v\r\n", x)
@@ -59,10 +62,10 @@ func main() {
 
 		if method == "I" {
 			// Solve the system using Iterations' method
-			x, i = Iteration(A, B, X0, eps)
+			x, i = mtd.Iteration(A, B, X0, eps)
 		} else {
 			// Решение методом Зейделя
-			x, i = Seidel(A, B, X0, eps)
+			x, i = mtd.Seidel(A, B, X0, eps)
 		}
 
 		// Вывод решения

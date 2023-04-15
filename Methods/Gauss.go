@@ -1,4 +1,4 @@
-package main
+package methods
 
 // Метод Гаусса для решения СЛАУ
 func Gauss(A [][]float64, B []float64) []float64 {
