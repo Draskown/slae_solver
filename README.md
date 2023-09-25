@@ -8,7 +8,9 @@ Go 1.20+
 
 ## Usage
 
-`go run main.go (1|2|3|4) (G|I|S)`
+```
+go run main.go (1|2|3|4) (G|I|S)
+```
 
 The first argument stands for the example SLAE (1 - 2-dimensional, 2 - 3-dimensional, etc...)
 
