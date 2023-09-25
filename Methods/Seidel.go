@@ -66,7 +66,7 @@ func Seidel(A [][]float64, B, X0 []float64, eps float64) ([]float64, int) {
 
 	// If there were to many iterations - return an error
 	if currentIter >= maxIter {
-		fmt.Println("Прошло слишком много итераций")
+		fmt.Println("Too many iterations")
 		return []float64{0.0, 0.0, 0.0}, currentIter
 	}
 

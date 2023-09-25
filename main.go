@@ -2,80 +2,19 @@ package main
 
 import (
 	mtd "SLAE/Methods"
+	hlp "SLAE/Helpers"
 
-	"fmt"
 	"os"
-	"strconv"
+	"fmt"
 )
 
-// Generate matrices for the SLAE based on the number passed
-func generateSLAE(N int) ([][]float64, []float64) {	
-	A := make([][]float64, N+1, N+1)
-	B := make([]float64, N+1)
-
-	switch N {
-	case 1:
-		A = [][]float64{
-			{3, -0.1},
-			{0.1, 7}}
-		B = []float64{7.85, -19.3}
-	case 2:
-		A = [][]float64{
-			{1, 1, -1},
-			{2, 3, -1},
-			{1, 2, 1}}
-		B = []float64{-2, 7, 3}
-	case 3:
-		A = [][]float64{
-				{2, -4, -1, 0},
-				{7, -5, 1, 3},
-				{8, 7, 4, -1},
-				{1, 1, 1, 1}}
-		B = []float64{0.04, -7, 15, 28}
-	case 4:
-		A = [][]float64{
-				{5, 2, 1, 1, -1},
-				{2, -6, 2, 1, 1},
-				{1, 2, -5, 1, 1},
-				{1, 1, 2, 4, 1},
-				{1, -1, 1, 2, 5}}
-		B = []float64{-3, 8, 5, -4, 7}
-	}
-
-	return A, B
-}
 
 func main() {
-
-	// Handle the CLI arguments
-	if len(os.Args) > 3 {
-		fmt.Println("Too many arguments \nUsage: `go run main.go (1|2|3|4) (G|I|S)`")
-		os.Exit(1)
-	}
-
-	if len(os.Args) < 3 {
-		fmt.Println("Too few arguments \nUsage: `go run main.go (1|2|3|4) (G|I|S)`")
-		os.Exit(1)
-	}
+	// Initialize SLAE matrices
+	var A [][]float64
+	var B []float64
 	
-	N, err := strconv.Atoi(os.Args[1])
-	if err != nil{
-		fmt.Println("Error while reading the Number of the matrices", err)
-	}
-	
-	if N < 1 || N > 4 {
-		fmt.Println("Wrong number of the example \nUsage: `go run main.go (1|2|3|4) (G|I|S)`")
-		os.Exit(1)
-	}
-	
-	method := os.Args[2]
-
-	if method != "I" && method != "S" && method != "G" {
-		fmt.Println("Wrong method \nUsage: `go run main.go (1|2|3|4) (G|I|S)`")
-		os.Exit(1)
-	}
-
-	A, B := generateSLAE(N)
+	hlp.CheckCLI(os.Args, &A, &B)
 
 	// Answer vectror
 	var x []float64
