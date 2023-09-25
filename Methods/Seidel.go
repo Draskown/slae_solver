@@ -5,71 +5,71 @@ import (
 	"math"
 )
 
-// Метод Зейделя для решения СЛАУ
+// Seidelian method for SLAE solving
 func Seidel(A [][]float64, B, X0 []float64, eps float64) ([]float64, int) {
 
-	// Размер матрицы
+	// Matrix size
 	n := len(A)
-	// Вектор решения
+	// Answer vector
 	X := make([]float64, n)
-	// Нулевые приближения
+	// Initial approximations
 	xPrev := X0
-	// Максимальное количество итераций
+	// Maximum iterations
 	maxIter := int(1e+8)
-	// Начальное значение итераций
+	// Current iteration
 	currentIter := 0
 
-	// Проводить вычисления до достижения максимума итераций
-	// Либо до достижения необходимой точности
+	// Compute until the maximum iterations met
+	// Or until the needed currency is achieved
 	for currentIter < maxIter {
-		// Каждая строка
+		// Every row
 		for i := 0; i < n; i++ {
 			var sum1 float64
 
-			// Столбцы
+			// Every column to the left
 			for j := 0; j < i; j++ {
-				// Считается сумма1 всех элементов строки слева от диагонали,
-				// Умноженное на новые приближения
+				// Sum1 of every elements left of the diagonal is counted
+				// Multiplied by new approximations
 				sum1 += A[i][j] * X[j]
 			}
 
 			var sum2 float64
 
-			// Столбцы
+			// Every column to the right
 			for j := i + 1; j < n; j++ {
-				// Считается сумма2 всех элементов строки справа от диагонали,
-				// Умноженное на старые приближения
+				// Sum1 of every elements right of the diagonal is counted
+				// Multiplied by new approximations
 				sum2 += A[i][j] * xPrev[j]
 			}
 
-			// Вычисление новых приближения
+			// Computing new approximations
 			X[i] = (B[i] - sum1 - sum2) / A[i][i]
 		}
 
-		// Вычисление точности как суммы
+		// Calculation the accurace as a sum
 		diff := 0.0
-		// Для каждого из новых приближений
+		// For a new of the new approximations
 		for i := 0; i < n; i++ {
 			diff += math.Abs(X[i] - xPrev[i])
-			// Присвоение новых нулевых приближений
+			// Assign new initial approximations
 			xPrev[i] = X[i]
 		}
 
-		// Проверка на совпадение точности
+		// Check for achieveng the accuracy
 		if diff < eps {
 			break
 		}
 
-		// Инкремент итераций
+		// Increment the current iteration
 		currentIter++
 	}
 
-	// Если итераций слишком много - вывести ошибку
+	// If there were to many iterations - return an error
 	if currentIter >= maxIter {
 		fmt.Println("Прошло слишком много итераций")
 		return []float64{0.0, 0.0, 0.0}, currentIter
 	}
 
-	// Если всё в порядке - вывести решение
+	// If not - return the answer
 	return X, currentIter
 }

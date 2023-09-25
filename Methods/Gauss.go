@@ -1,47 +1,47 @@
 package methods
 
-// Метод Гаусса для решения СЛАУ
+// Gaussian method for SLAE solving
 func Gauss(A [][]float64, B []float64) []float64 {
-	// Размер матрицы
+	// Matrix size
 	n := len(A)
 
-	// Прямой ход метода Гаусса
-	// Каждый ряд без последнего
+	// Straight approach
+	// Every row w/o the last one
 	for k := 0; k < n-1; k++ {
-		// Каждый столбец+1
+		// Every column of row + 1 to n
 		for i := k + 1; i < n; i++ {
-			// Высчитывается коэффициент
+			// Calculate the multiplier
 			m := A[i][k] / A[k][k]
-			// Прибавление коэффициента к
-			// Нижним строчкам матрицы
+			// Add the multiplier to the
+			// Lower rows of the matrix
 			for j := k + 1; j < n; j++ {
 				A[i][j] -= m * A[k][j]
 			}
-			// Прибавление коэффициента к правой части матрицы
+			// Add the multiplier to the right side of the matrix
 			B[i] -= m * B[k]
-			// Обнуление первых элементов строк
+			// Set first elements of the rows to zero
 			A[i][k] = 0
 		}
 	}
 
-	// Обратный ход
+	// Reverse approach
 	X := make([]float64, n)
-	// Каждая строка
+	// Every row
 	for i := n - 1; i >= 0; i-- {
-		/* Сумма элементов строки
-		Должна равняться соответствующему
-		Элементу правой части */
+		/* The sum of the row elements
+		must be equal to the corresponding
+		element of the right side */
 		sum := B[i]
 
-		/* Подставляется нижнее значение
-		Ступенчатой матрицы
-		И высчитываются коэффициенты */
+		/*The lower value of the 
+		step matrix is being used
+		to calculate new multipliers*/
 		for j := i + 1; j < n; j++ {
 			sum -= A[i][j] * X[j]
 		}
 		X[i] = sum / A[i][i]
 	}
 
-	// Возвращается результат
+	// Return the result
 	return X
 }

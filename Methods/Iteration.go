@@ -5,64 +5,64 @@ import (
 	"math"
 )
 
-// Метод итераций для решения СЛАУ
+// Iterational method for SLAE solving
 func Iteration(A [][]float64, B, X0 []float64, eps float64) ([]float64, int) {
 
-	// Размер матрицы
+	// Size of the matrix
 	n := len(B)
-	// Вектор ответа
+	// Answer vector
 	X := make([]float64, n)
-	// Нулевые приближения
+	// Initial approximations
 	xPrev := X0
-	// Максимум итераций
+	// Max of iterations
 	maxIter := int(1e+8)
-	// Текущая итерация
+	// Current iteration
 	currentIter := 0
 
-	// Проводить вычисления до достижения максимума итераций
-	// Либо до достижения необходимой точности
+	// Compute until the number of max iterations are met
+	// Or until the needed accuracy is achieved
 	for currentIter < maxIter {
-		// Каждая строка
+		// Every row
 		for i := 0; i < n; i++ {
 			var sum float64
 
-			// Каждый столбец
+			// Every column
 			for j := 0; j < n; j++ {
-				// Если элемент матрицы не лежит на диагонали
+				// If an element of the matrix is diagonal
 				if j != i {
-					// Добавить его в сумму
+					// Add it to the sum
 					sum += A[i][j] * X[j]
 				}
 			}
 
-			// Вычисление новых приближения
+			// Calculate new approximations
 			X[i] = (B[i] - sum) / A[i][i]
 		}
 
-		// Вычисление точности как суммы
+		// Computing accuracy as a sum
 		var diff float64
-		// Для каждого из новых приближений
+		// For every of the new approximations
 		for i := 0; i < n; i++ {
 			diff += math.Abs(X[i] - xPrev[i])
-			// Присвоение новых нулевых приближений
+			// Assign new initial approximations
 			xPrev[i] = X[i]
 		}
 
-		// Проверка на совпадение точности
+		// Check the accuracy
 		if diff < eps {
 			break
 		}
 
-		// Инкремент итераций
+		// Increment current iteration
 		currentIter++
 	}
 
-	// Если итераций слишком много - вывести ошибку
+	// If there were too many iterations - return an error
 	if currentIter >= maxIter {
 		fmt.Println("Прошло слишком много итераций")
 		return make([]float64, n), currentIter
 	}
 
-	// Если всё в порядке - вывести решение
+	// If not - return the answer
 	return X, currentIter
 }
